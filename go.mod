@@ -1,3 +1,3 @@
-module git-ai-commits.yijunjun.icu
+module github.com/deep2code/git-ai-commit
 
 go 1.25.5
