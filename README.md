@@ -15,7 +15,7 @@
 
 ```bash
 # 从源码编译
-git clone https://github.com/your-repo/git-ai-commit.git
+git clone https://github.com/deep2code/git-ai-commit.git
 cd git-ai-commit
 ./build.sh
 ```
@@ -24,7 +24,7 @@ cd git-ai-commit
 
 1. **下载工具**：克隆并编译项目
    ```bash
-   git clone https://github.com/your-repo/git-ai-commit.git
+   git clone https://github.com/deep2code/git-ai-commit.git
    cd git-ai-commit
    ./build.sh
    # 将编译后的二进制文件添加到 PATH
@@ -39,7 +39,11 @@ cd git-ai-commit
    # 或设置其他提供商
    # export BAIDU_API_KEY=your-api-key-here
    # export SILICONFLOW_API_KEY=your-api-key-here
+   # export MODELSCOPE_API_KEY=your-api-key-here
    # export QWEN_API_KEY=your-api-key-here
+   # export TENCENT_API_KEY=your-api-key-here
+   # export VOLCENGINE_API_KEY=your-api-key-here
+   # export DEEPSEEK_API_KEY=your-api-key-here
    ```
 
 3. **使用命令**：一键提交
