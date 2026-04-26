@@ -28,7 +28,7 @@
 
 #### 方式一：从 GitHub Release 下载（推荐）
 
-<details>
+<details open>
 <summary>macOS (Apple Silicon)</summary>
 
 ```bash
@@ -41,7 +41,7 @@ sudo mv git-ai-commit /usr/local/bin/
 
 </details>
 
-<details>
+<details open>
 <summary>macOS (Intel)</summary>
 
 ```bash
@@ -54,7 +54,7 @@ sudo mv git-ai-commit /usr/local/bin/
 
 </details>
 
-<details>
+<details open>
 <summary>Linux</summary>
 
 ```bash
@@ -67,7 +67,7 @@ sudo mv git-ai-commit /usr/local/bin/
 
 </details>
 
-<details>
+<details open>
 <summary>Windows</summary>
 
 ```bash
