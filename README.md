@@ -94,10 +94,18 @@ cd git-ai-commit
 
 ### 配置环境变量
 
-设置对应 AI 提供商的 API Key：
+根据不同平台，设置对应 AI 提供商的 API Key：
 
+#### macOS
+
+打开终端，编辑 shell 配置文件（根据你使用的 shell 选择）：
+
+**使用 Zsh（默认）**：
 ```bash
-# 示例：设置智谱 API Key, 其他提供商的 API Key 也可以设置,只需要设置一个
+# 编辑配置文件
+nano ~/.zshrc
+
+# 在文件末尾添加以下内容（选择一个或多个）
 export ZHIPU_API_KEY=your-api-key-here
 export BAIDU_API_KEY=your-api-key-here
 export SILICONFLOW_API_KEY=your-api-key-here
@@ -106,11 +114,69 @@ export QWEN_API_KEY=your-api-key-here
 export TENCENT_API_KEY=your-api-key-here
 export VOLCENGINE_API_KEY=your-api-key-here
 export DEEPSEEK_API_KEY=your-api-key-here
+
+# 保存并退出（按 Ctrl+X，然后按 Y，最后按 Enter）
+
+# 使配置生效
+source ~/.zshrc
 ```
 
-### 使用方法
+**使用 Bash**：
+```bash
+# 编辑配置文件
+nano ~/.bash_profile
 
-项目安装完成后，有以下两种使用方式：
+# 在文件末尾添加环境变量
+export ZHIPU_API_KEY=your-api-key-here
+# ... 其他 API Key
+
+# 保存并退出
+source ~/.bash_profile
+```
+
+#### Linux
+
+打开终端，编辑 shell 配置文件：
+
+```bash
+# 编辑配置文件
+nano ~/.bashrc
+
+# 在文件末尾添加以下内容
+export ZHIPU_API_KEY=your-api-key-here
+export BAIDU_API_KEY=your-api-key-here
+export SILICONFLOW_API_KEY=your-api-key-here
+export MODELSCOPE_API_KEY=your-api-key-here
+export QWEN_API_KEY=your-api-key-here
+export TENCENT_API_KEY=your-api-key-here
+export VOLCENGINE_API_KEY=your-api-key-here
+export DEEPSEEK_API_KEY=your-api-key-here
+
+# 保存并退出
+source ~/.bashrc
+```
+
+#### Windows
+
+**方法一：通过系统设置**
+1. 右键点击「此电脑」→「属性」
+2. 点击「高级系统设置」→「环境变量」
+3. 在「用户变量」或「系统变量」中点击「新建」
+4. 输入变量名（如 `ZHIPU_API_KEY`）和变量值（你的 API Key）
+5. 点击「确定」保存
+
+**方法二：通过命令行**
+```powershell
+# 临时设置（仅当前会话有效）
+$env:ZHIPU_API_KEY="your-api-key-here"
+
+# 永久设置（需要管理员权限）
+[Environment]::SetEnvironmentVariable("ZHIPU_API_KEY", "your-api-key-here", "User")
+```
+
+> 📌 **注意**：只需要设置一个 AI 提供商的 API Key 即可，系统会按优先级自动检测。
+
+### 使用方法
 
 #### 方式一：CLI 模式（一键提交）
 
