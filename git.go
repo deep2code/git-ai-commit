@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
@@ -8,6 +9,8 @@ import (
 	"strings"
 	"unicode"
 )
+
+const MAX_CONTENT_CHARS = 4000
 
 // ==========================================================
 // Diff 过滤与压缩逻辑
@@ -40,9 +43,8 @@ func getStagedChanges() (string, error) {
 	sb.WriteString(compressedDiff)
 
 	content := sb.String()
-	maxChars := 4000
-	if len(content) > maxChars {
-		content = content[:maxChars] + "\n... [内容过长已截断，请根据现有信息推断]"
+	if len(content) > MAX_CONTENT_CHARS {
+		content = content[:MAX_CONTENT_CHARS] + "\n... [内容过长已截断，请根据现有信息推断]"
 	}
 
 	return content, nil
@@ -59,6 +61,47 @@ func getStatSummary() string {
 		return ""
 	}
 	return string(out)
+}
+
+// getDiffOutput 获取原始标准 diff，且【绝对不影响用户的 Git 配置和后续使用】
+func getDiffOutput(keptFiles []string) ([]byte, error) {
+	if len(keptFiles) == 0 {
+		return nil, fmt.Errorf("getDiffOutput: keptFiles 不能为空")
+	}
+
+	// 1. 构造参数：所有 -c 和 --no-ext-diff 都是【临时参数】，仅对本次命令生效
+	// 注意：-c diff.external= 会静默忽略用户原有的 diff.external 配置，
+	// 确保本次调用始终使用标准 diff，这是本函数的设计目标
+	args := []string{
+		"-c", "diff.external=", // 【临时】清空配置，不写入 ~/.gitconfig
+		"diff", "--no-ext-diff", // 【临时】强制禁用外部 diff，仅本次有效
+		"--cached", // 比较暂存区
+		"--",
+	}
+	args = append(args, keptFiles...)
+
+	cmd := exec.Command("git", args...)
+
+	// 2. 【关键】仅清理【子进程】的环境变量，不影响用户的终端
+	cmd.Env = os.Environ() // 先复制一份当前环境
+	var newEnv []string
+	for _, e := range cmd.Env {
+		if !strings.HasPrefix(e, "GIT_EXTERNAL_DIFF=") &&
+			!strings.HasPrefix(e, "GIT_DIFF_CMD=") {
+			newEnv = append(newEnv, e)
+		}
+	}
+	cmd.Env = newEnv
+
+	// 3. 捕获输出并执行
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	if err := cmd.Run(); err != nil {
+		return nil, fmt.Errorf("git diff 失败: %w\n%s", err, stderr.String())
+	}
+
+	return stdout.Bytes(), nil
 }
 
 // getFilteredDiff 获取过滤后的Diff内容
@@ -111,9 +154,7 @@ func getFilteredDiff() (string, error) {
 	}
 
 	if len(keptFiles) > 0 {
-		args := append([]string{"diff", "--cached", "--"}, keptFiles...)
-		cmdDiff := exec.Command("git", args...)
-		diffOut, err := cmdDiff.Output()
+		diffOut, err := getDiffOutput(keptFiles)
 		if err != nil {
 			return "", fmt.Errorf("获取Diff内容失败: %v", err)
 		}
@@ -217,15 +258,21 @@ func countImportantSymbols(line string) int {
 // 返回值：压缩后的Diff内容字符串
 func compressDiffUniversal(diff string, maxContext int, maxDetailLines int) string {
 	lines := strings.Split(diff, "\n")
-	var sb strings.Builder
-	sb.Grow(len(diff) / 2)
-
 	hunks := extractHunks(lines)
+
+	// Handle case when no hunks are extracted
+	if len(hunks) == 0 {
+		return diff
+	}
+
 	hunkStats := make([]hunkStat, len(hunks))
 
 	for i, hunk := range hunks {
 		hunkStats[i] = analyzeHunk(lines, hunk)
 	}
+
+	var sb strings.Builder
+	sb.Grow(len(diff) / 2)
 
 	for i, line := range lines {
 		if isHeaderLine(line) {
@@ -255,13 +302,14 @@ func compressDiffUniversal(diff string, maxContext int, maxDetailLines int) stri
 		hunkIdx := findHunkIndexForLine(i, hunks)
 		shouldTruncate := false
 		detailCount := 0
+		contextLines := 0
 		if hunkIdx >= 0 && hunkIdx < len(hunkStats) {
 			shouldTruncate = !hunkStats[hunkIdx].keepFull
 			detailCount = hunkStats[hunkIdx].detailCount
+			contextLines = hunkStats[hunkIdx].contextCount
 		}
 
 		if !strings.HasPrefix(line, "+") && !strings.HasPrefix(line, "-") {
-			contextLines := hunkStats[hunkIdx].contextCount
 			if contextLines < maxContext {
 				sb.WriteString(line)
 				if i < len(lines)-1 {
@@ -335,12 +383,13 @@ func extractHunks(lines []string) []hunkRange {
 	var hunks []hunkRange
 	for i, line := range lines {
 		if strings.HasPrefix(line, "@@ ") {
+			if len(hunks) > 0 && hunks[len(hunks)-1].end == 0 {
+				hunks[len(hunks)-1].end = i
+			}
 			hunks = append(hunks, hunkRange{start: i})
-		} else if len(hunks) > 0 && i > 0 && lines[i-1] == "" && !strings.HasPrefix(line, "@@ ") && !strings.HasPrefix(line, "diff ") && !strings.HasPrefix(line, "index ") && !strings.HasPrefix(line, "--- ") && !strings.HasPrefix(line, "+++ ") {
-			hunks[len(hunks)-1].end = i - 1
 		}
 	}
-	if len(hunks) > 0 {
+	if len(hunks) > 0 && hunks[len(hunks)-1].end == 0 {
 		hunks[len(hunks)-1].end = len(lines)
 	}
 	return hunks
@@ -520,8 +569,7 @@ func calculateKeywordScore(line string) int {
 	lowerLine := strings.ToLower(line)
 
 	for keyword, weight := range languageKeywords {
-		pattern := regexp.MustCompile(`\b` + keyword + `\b`)
-		if pattern.MatchString(lowerLine) {
+		if strings.Contains(lowerLine, keyword) {
 			score += weight
 		}
 	}

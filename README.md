@@ -26,49 +26,62 @@
 
 ### 安装
 
+#### 方式一：从 GitHub Release 下载（推荐）
+
+```bash
+# macOS (Apple Silicon)
+curl -fsSL https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-darwin-arm64 -o git-ai-commit
+chmod +x git-ai-commit
+sudo mv git-ai-commit /usr/local/bin/
+
+# macOS (Intel)
+curl -fsSL https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-darwin-amd64 -o git-ai-commit
+chmod +x git-ai-commit
+sudo mv git-ai-commit /usr/local/bin/
+
+# Linux
+curl -fsSL https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-linux-amd64 -o git-ai-commit
+chmod +x git-ai-commit
+sudo mv git-ai-commit /usr/local/bin/
+```
+
+> 📌 更多平台版本请访问 [Release 页面](https://github.com/deep2code/git-ai-commit/releases/latest)
+
+#### 方式二：从源码编译
+
 ```bash
 git clone https://github.com/deep2code/git-ai-commit.git
 cd git-ai-commit
 ./build.sh
 ```
 
-### 使用方法
-
-#### 1️⃣ 下载并编译工具
-
-```bash
-git clone https://github.com/deep2code/git-ai-commit.git
-cd git-ai-commit
-./build.sh
-# 将编译后的二进制文件添加到 PATH
-cp git-ai-commit /usr/local/bin/  # 或其他 PATH 目录
-```
-
-#### 2️⃣ 配置环境变量
+### 配置环境变量
 
 设置对应 AI 提供商的 API Key：
 
 ```bash
-# 示例：设置智谱 API Key
+# 示例：设置智谱 API Key, 其他提供商的 API Key 也可以设置,只需要设置一个即可
 export ZHIPU_API_KEY=your-api-key-here
-
-# 或设置其他提供商
-# export BAIDU_API_KEY=your-api-key-here
-# export SILICONFLOW_API_KEY=your-api-key-here
-# export MODELSCOPE_API_KEY=your-api-key-here
-# export QWEN_API_KEY=your-api-key-here
-# export TENCENT_API_KEY=your-api-key-here
-# export VOLCENGINE_API_KEY=your-api-key-here
-# export DEEPSEEK_API_KEY=your-api-key-here
+export BAIDU_API_KEY=your-api-key-here
+export SILICONFLOW_API_KEY=your-api-key-here
+export MODELSCOPE_API_KEY=your-api-key-here
+export QWEN_API_KEY=your-api-key-here
+export TENCENT_API_KEY=your-api-key-here
+export VOLCENGINE_API_KEY=your-api-key-here
+export DEEPSEEK_API_KEY=your-api-key-here
 ```
 
-#### 3️⃣ 一键提交
+### 使用方法
+
+项目安装完成后，有以下两种使用方式：
+
+#### 方式一：CLI 模式（一键提交）
 
 ```bash
 git add . && git commit -m "$(git-ai-commit)" && git push
 ```
 
-#### 4️⃣ Git Hook 模式
+#### 方式二：Git Hook 模式
 
 ```bash
 # 只需做一次：创建 hook 链接

@@ -49,12 +49,6 @@ func main() {
 	flag.StringVar(&endpoint, "endpoint", "", "API Endpoint")
 	flag.StringVar(&model, "model", "", "Model Name")
 
-	// 短选项
-	flag.StringVar(&apiKey, "k", "", "API Key (short)")
-	flag.StringVar(&aiProvider, "p", "", "AI Provider (short)")
-	flag.StringVar(&endpoint, "e", "", "API Endpoint (short)")
-	flag.StringVar(&model, "m", "", "Model Name (short)")
-
 	if len(os.Args) > 1 {
 		msgFilePath = os.Args[1]
 		if msgFilePath == ".git/COMMIT_EDITMSG" {
@@ -66,12 +60,11 @@ func main() {
 					os.Exit(0)
 				}
 			}
-		} else {
-			// CLI 模式：解析命令行参数
-			flag.Parse()
 		}
-	} else {
-		// CLI 模式：解析命令行参数
+	}
+
+	if !isHookMode {
+		// 解析命令行参数
 		flag.Parse()
 	}
 
