@@ -50,14 +50,14 @@ func detectByEnv() {
 		name       string
 		envVarName string
 	}{
-		{"zhipu", "ZHIPU_API_KEY"},
-		{"baidu", "BAIDU_API_KEY"},
 		{"siliconflow", "SILICONFLOW_API_KEY"},
 		{"modelscope", "MODELSCOPE_API_KEY"},
-		{"qwen", "QWEN_API_KEY"},
-		{"deepseek", "DEEPSEEK_API_KEY"},
+		{"baidu", "BAIDU_API_KEY"},
 		{"tencent", "TENCENT_API_KEY"},
 		{"volcengine", "VOLCENGINE_API_KEY"},
+		{"zhipu", "ZHIPU_API_KEY"},
+		{"qwen", "QWEN_API_KEY"},
+		{"deepseek", "DEEPSEEK_API_KEY"},
 	}
 
 	// 遍历提供商，检查环境变量
