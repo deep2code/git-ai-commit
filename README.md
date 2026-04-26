@@ -37,6 +37,8 @@ chmod +x git-ai-commit
 sudo mv git-ai-commit /usr/local/bin/
 ```
 
+<a href="https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-darwin-arm64" style="display: inline-block; padding: 6px 12px; background-color: #24292e; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 600;">⬇️ 直接下载</a>
+
 </details>
 
 <details>
@@ -48,6 +50,8 @@ chmod +x git-ai-commit
 sudo mv git-ai-commit /usr/local/bin/
 ```
 
+<a href="https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-darwin-amd64" style="display: inline-block; padding: 6px 12px; background-color: #24292e; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 600;">⬇️ 直接下载</a>
+
 </details>
 
 <details>
@@ -58,6 +62,23 @@ curl -fsSL https://github.com/deep2code/git-ai-commit/releases/latest/download/g
 chmod +x git-ai-commit
 sudo mv git-ai-commit /usr/local/bin/
 ```
+
+<a href="https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-linux-amd64" style="display: inline-block; padding: 6px 12px; background-color: #24292e; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 600;">⬇️ 直接下载</a>
+
+</details>
+
+<details>
+<summary>Windows</summary>
+
+```bash
+# 下载可执行文件
+Invoke-WebRequest -Uri "https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-windows-amd64.exe" -OutFile "git-ai-commit.exe"
+
+# 添加到系统 PATH（可选）
+# 或手动将文件移动到系统 PATH 目录
+```
+
+<a href="https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-windows-amd64.exe" style="display: inline-block; padding: 6px 12px; background-color: #24292e; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 600;">⬇️ 直接下载</a>
 
 </details>
 
