@@ -15,6 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check for Go file changes
+        id: changed-go-files
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            go:
+              - '**.go'
+
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
@@ -36,6 +44,7 @@ jobs:
           # Build for macOS
           GOOS=darwin GOARCH=amd64 go build -o git-ai-commit-darwin-amd64 .
           chmod +x git-ai-commit-darwin-amd64
+        if: steps.changed-go-files.outputs.go == 'true'
 
       - name: Create GitHub Release and Upload Assets
         uses: softprops/action-gh-release@v2
@@ -44,9 +53,11 @@ jobs:
           release_name: Release v${{ github.run_number }}
           draft: false
           prerelease: false
+          delete_old_releases: true
           files: |
             ./git-ai-commit-linux-amd64
             ./git-ai-commit-windows-amd64.exe
             ./git-ai-commit-darwin-amd64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: steps.changed-go-files.outputs.go == 'true'

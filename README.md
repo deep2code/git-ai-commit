@@ -28,9 +28,8 @@
 
 #### 方式一：从 GitHub Release 下载（推荐）
 
-<!-- tabs:start -->
-
-<!-- tab:macOS (Apple Silicon) -->
+<details>
+<summary>macOS (Apple Silicon)</summary>
 
 ```bash
 curl -fsSL https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-darwin-arm64 -o git-ai-commit
@@ -38,7 +37,10 @@ chmod +x git-ai-commit
 sudo mv git-ai-commit /usr/local/bin/
 ```
 
-<!-- tab:macOS (Intel) -->
+</details>
+
+<details>
+<summary>macOS (Intel)</summary>
 
 ```bash
 curl -fsSL https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-darwin-amd64 -o git-ai-commit
@@ -46,7 +48,10 @@ chmod +x git-ai-commit
 sudo mv git-ai-commit /usr/local/bin/
 ```
 
-<!-- tab:Linux -->
+</details>
+
+<details>
+<summary>Linux</summary>
 
 ```bash
 curl -fsSL https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-linux-amd64 -o git-ai-commit
@@ -54,7 +59,7 @@ chmod +x git-ai-commit
 sudo mv git-ai-commit /usr/local/bin/
 ```
 
-<!-- tabs:end -->
+</details>
 
 > 📌 更多平台版本请访问 [Release 页面](https://github.com/deep2code/git-ai-commit/releases/latest)
 
@@ -71,7 +76,7 @@ cd git-ai-commit
 设置对应 AI 提供商的 API Key：
 
 ```bash
-# 示例：设置智谱 API Key, 其他提供商的 API Key 也可以设置,只需要设置一个即可
+# 示例：设置智谱 API Key, 其他提供商的 API Key 也可以设置,只需要设置一个
 export ZHIPU_API_KEY=your-api-key-here
 export BAIDU_API_KEY=your-api-key-here
 export SILICONFLOW_API_KEY=your-api-key-here
