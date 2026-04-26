@@ -28,22 +28,33 @@
 
 #### 方式一：从 GitHub Release 下载（推荐）
 
+<!-- tabs:start -->
+
+<!-- tab:macOS (Apple Silicon) -->
+
 ```bash
-# macOS (Apple Silicon)
 curl -fsSL https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-darwin-arm64 -o git-ai-commit
 chmod +x git-ai-commit
 sudo mv git-ai-commit /usr/local/bin/
+```
 
-# macOS (Intel)
+<!-- tab:macOS (Intel) -->
+
+```bash
 curl -fsSL https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-darwin-amd64 -o git-ai-commit
 chmod +x git-ai-commit
 sudo mv git-ai-commit /usr/local/bin/
+```
 
-# Linux
+<!-- tab:Linux -->
+
+```bash
 curl -fsSL https://github.com/deep2code/git-ai-commit/releases/latest/download/git-ai-commit-linux-amd64 -o git-ai-commit
 chmod +x git-ai-commit
 sudo mv git-ai-commit /usr/local/bin/
 ```
+
+<!-- tabs:end -->
 
 > 📌 更多平台版本请访问 [Release 页面](https://github.com/deep2code/git-ai-commit/releases/latest)
 
@@ -96,7 +107,7 @@ git commit
 
 ---
 
-## 🔧 开发调试 - CLI 模式
+## 🔧 开发调试
 
 ```bash
 # 使用指定 API Key 和提供商
