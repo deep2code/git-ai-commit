@@ -207,11 +207,18 @@ git-ai-commit --ai-provider zhipu --api-key <key> --model GLM-4-Flash-250414 --e
 
 ## ⚙️ 工作原理
 
-```
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│  git diff   │───▶│  智能过滤   │───▶│  压缩摘要   │───▶│  AI 生成   │───▶│  输出结果   │
-│ --cached   │    │  锁/二进制  │    │  diff      │    │  提交信息   │    │  CLI/Hook  │
-└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+```mermaid
+flowchart LR
+    A["git diff\n--cached"] --> B["智能过滤<br/>锁文件/二进制"]
+    B --> C["压缩摘要<br/>Diff"]
+    C --> D["AI 生成<br/>提交信息"]
+    D --> E["输出结果<br/>CLI / Hook"]
+
+    style A fill:#e1f5ff,stroke:#01579b
+    style B fill:#fff3e0,stroke:#e65100
+    style C fill:#e8f5e9,stroke:#2e7d32
+    style D fill:#f3e5f5,stroke:#7b1fa2
+    style E fill:#fce4ec,stroke:#c2185b
 ```
 
 1. **获取变更**：通过 `git diff --cached` 获取暂存区的代码变更
